@@ -1,7 +1,12 @@
-import "twin.macro";
+import { BrowserRouter } from "react-router-dom";
+import { Router } from "./router";
 
 const App: React.FC = () => {
-  return <span tw="text-gray-900 text-9xl">YourTodo</span>;
+  return (
+    <BrowserRouter>
+      <Router />
+    </BrowserRouter>
+  );
 };
 
 export { App };
