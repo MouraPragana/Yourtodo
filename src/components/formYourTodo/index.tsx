@@ -1,82 +1,27 @@
 import { TextField } from "@mui/material";
 import "twin.macro";
+import { muiConfig } from "./MuiConfig";
+import { FormContainer } from "./styles";
 
 const FormYourTodo: React.FC = () => {
   return (
-    <>
-      <TextField
-        id="projeto"
-        label="Projeto"
-        variant="filled"
-        sx={{
-          "& .MuiFormLabel-root": {
-            color: "white !important",
-          },
-          "& .MuiFormLabel-root:focus": {
-            color: "white !important",
-          },
-          "& .MuiInputBase-input": {
-            borderBottom: "1px solid white !important",
-            color: "white !important",
-          },
-          "& .MuiFilledInput-underline:after": {
-            borderBottomColor: "white !important",
-          },
-          "& .css-19mk8g1-MuiInputBase-root-MuiFilledInput-root:hover:not(.Mui-disabled):before":
-            {
-              borderBottom: "1px solid white !important",
-            },
-        }}
-      />
+    <FormContainer tw="flex flex-col space-y-2.5">
+      <TextField id="projeto" label="Projeto" variant="filled" sx={muiConfig} />
       <TextField
         id="descricao"
         label="Descrição"
         variant="filled"
-        sx={{
-          "& .MuiFormLabel-root": {
-            color: "white !important",
-          },
-          "& .MuiFormLabel-root:focus": {
-            color: "white !important",
-          },
-          "& .MuiInputBase-input": {
-            borderBottom: "1px solid white !important",
-            color: "white !important",
-          },
-          "& .MuiFilledInput-underline:after": {
-            borderBottomColor: "white !important",
-          },
-          "& .css-19mk8g1-MuiInputBase-root-MuiFilledInput-root:hover:not(.Mui-disabled):before":
-            {
-              borderBottom: "1px solid white !important",
-            },
-        }}
+        sx={muiConfig}
       />
       <TextField
         id="dataPrevisao"
         label="Data previsão"
         variant="filled"
-        sx={{
-          "& .MuiFormLabel-root": {
-            color: "white !important",
-          },
-          "& .MuiFormLabel-root:focus": {
-            color: "white !important",
-          },
-          "& .MuiInputBase-input": {
-            borderBottom: "1px solid white !important",
-            color: "white !important",
-          },
-          "& .MuiFilledInput-underline:after": {
-            borderBottomColor: "white !important",
-          },
-          "& .css-19mk8g1-MuiInputBase-root-MuiFilledInput-root:hover:not(.Mui-disabled):before":
-            {
-              borderBottom: "1px solid white !important",
-            },
-        }}
+        type="date"
+        defaultValue={"2022-11-29"}
+        sx={muiConfig}
       />
-    </>
+    </FormContainer>
   );
 };
 
