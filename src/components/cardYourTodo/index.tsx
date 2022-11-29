@@ -22,7 +22,7 @@ const CardYourTodo = ({
 }: ICardYourTodo) => {
   return (
     <div tw="flex lg:flex-row flex-col bg-blue-100 lg:w-10/12 w-full rounded min-h-[fit-content] mx-auto p-4 lg:gap-0 gap-2">
-      <div tw="lg:w-2/3 w-full text-left flex flex-col space-y-4">
+      <div tw="lg:w-2/3 w-full text-left flex flex-col space-y-2">
         <span tw="block">Projeto: {projeto}</span>
         <span tw="block">Descrição: {descricao}</span>
         <span tw="block">{status}</span>
