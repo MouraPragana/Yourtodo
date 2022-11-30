@@ -37,8 +37,8 @@ const Home: React.FC = () => {
         <form tw="lg:w-10/12 w-full mx-auto">
           <FormYourTodo />
         </form>
-        <div tw="space-y-3">
-          {/* <CardYourTodo
+        {/* <div tw="space-y-3">
+          <CardYourTodo
             projeto="Migração do banco de Dados Protheus"
             descricao="Migração do banco para melhoria de performance"
             status="Em andamento"
@@ -68,8 +68,8 @@ const Home: React.FC = () => {
             dataCriacao="29/11"
             dataPrevisao="30/11"
             dataFinalizacao="31/11"
-          /> */}
-        </div>
+          />
+        </div> */}
         <NoYourTodo />
       </div>
     </div>
