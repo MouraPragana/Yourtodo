@@ -1,11 +1,11 @@
-import { TextField } from "@mui/material";
+import { Button, TextField } from "@mui/material";
 import "twin.macro";
 import { muiConfig } from "./MuiConfig";
 import { FormContainer } from "./styles";
 
 const FormYourTodo: React.FC = () => {
   return (
-    <FormContainer tw="flex flex-col space-y-2.5">
+    <FormContainer tw="flex flex-col space-y-3.5">
       <TextField id="projeto" label="Projeto" variant="filled" sx={muiConfig} />
       <TextField
         id="descricao"
@@ -21,6 +21,9 @@ const FormYourTodo: React.FC = () => {
         defaultValue={"2022-11-29"}
         sx={muiConfig}
       />
+      <Button sx={{ py: 1.25 }} variant="contained">
+        Cadastrar Projeto
+      </Button>
     </FormContainer>
   );
 };
