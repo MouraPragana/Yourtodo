@@ -11,15 +11,22 @@ interface ICardYourTodo {
   dataCriacao: string;
   dataPrevisao: string;
   dataFinalizacao?: string;
+  onClickToAdd: (id: string) => void;
+  onClickToGetDone: (id: string) => void;
+  onClickToRestart: (id: string) => void;
 }
 
 const CardYourTodo = ({
+  id,
   projeto,
   descricao,
   status,
   dataCriacao,
   dataPrevisao,
   dataFinalizacao,
+  onClickToAdd,
+  onClickToGetDone,
+  onClickToRestart,
 }: ICardYourTodo) => {
   return (
     <div tw="flex lg:flex-row flex-col bg-blue-100 lg:w-10/12 w-full rounded min-h-[fit-content] mx-auto p-4 lg:gap-0 gap-2">
@@ -31,14 +38,17 @@ const CardYourTodo = ({
           <BsTrash
             size={22}
             tw="hover:text-blue-800 hover:scale-105 cursor-pointer"
+            onClick={() => onClickToAdd(id)}
           />
           <AiOutlineCheckCircle
             size={22}
             tw="hover:text-blue-800 hover:scale-105 cursor-pointer"
+            onClick={() => onClickToGetDone(id)}
           />
           <VscDebugRestart
             size={22}
             tw="hover:text-blue-800 hover:scale-105 cursor-pointer"
+            onClick={() => onClickToRestart(id)}
           />
         </div>
       </div>
@@ -53,14 +63,17 @@ const CardYourTodo = ({
           <BsTrash
             size={22}
             tw="hover:text-blue-800 hover:scale-105 cursor-pointer"
+            onClick={() => onClickToAdd(id)}
           />
           <AiOutlineCheckCircle
             size={22}
             tw="hover:text-blue-800 hover:scale-105 cursor-pointer"
+            onClick={() => onClickToGetDone(id)}
           />
           <VscDebugRestart
             size={22}
             tw="hover:text-blue-800 hover:scale-105 cursor-pointer"
+            onClick={() => onClickToRestart(id)}
           />
         </div>
       </div>

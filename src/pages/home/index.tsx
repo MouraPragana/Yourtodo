@@ -1,6 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { addDays, format, startOfDay } from "date-fns";
-import { endOfDay, nextDay } from "date-fns/esm";
 import { FormProvider, useForm } from "react-hook-form";
 import "twin.macro";
 import * as zod from "zod";
@@ -8,8 +7,10 @@ import { CardYourTodo } from "../../components/cardYourTodo";
 import { FormYourTodo } from "../../components/formYourTodo";
 import { NoYourTodo } from "../../components/noYourTodo";
 import { useYourTodoContext } from "../../contexts/yourTodoContext";
+import { v4 as uuidv4 } from "uuid";
 
 interface IYourTodo {
+  id: string;
   projeto: string;
   descricao: string;
   status: "Pausado" | "Em andamento" | "Concluído";
@@ -19,7 +20,13 @@ interface IYourTodo {
 }
 
 const Home: React.FC = () => {
-  const { addToYourTodoList, yourTodoList } = useYourTodoContext();
+  const {
+    addToYourTodoList,
+    yourTodoList,
+    removeYourTodo,
+    getYourTodoDone,
+    restartYourTodo,
+  } = useYourTodoContext();
 
   const newYourTodoValidationSchema = zod.object({
     projeto: zod.string().min(1, "Escreva um nome de projeto válido"),
@@ -43,6 +50,7 @@ const Home: React.FC = () => {
 
   const handleAddNewYourTodo = (data: newYourTodoFormData) => {
     const newYourTodoToAdd: IYourTodo = {
+      id: uuidv4(),
       projeto: data.projeto,
       descricao: data.descricaoProjeto,
       status: "Em andamento",
@@ -53,8 +61,11 @@ const Home: React.FC = () => {
       ),
       dataFinalizacao: "",
     };
-
     addToYourTodoList(newYourTodoToAdd);
+  };
+
+  const handleRemoveYourTodo = (id: string) => {
+    removeYourTodo(id);
   };
 
   const error = (error: any) => {
@@ -85,11 +96,17 @@ const Home: React.FC = () => {
             {yourTodoList?.map((yourTodo) => {
               return (
                 <CardYourTodo
+                  id={yourTodo.id}
+                  key={yourTodo.id}
                   projeto={yourTodo.projeto}
                   descricao={yourTodo.descricao}
                   status={yourTodo.status}
                   dataCriacao={yourTodo.dataCriacao}
                   dataPrevisao={yourTodo.dataPrevisao}
+                  dataFinalizacao={yourTodo.dataFinalizacao}
+                  onClickToAdd={handleRemoveYourTodo}
+                  onClickToGetDone={getYourTodoDone}
+                  onClickToRestart={restartYourTodo}
                 />
               );
             })}
