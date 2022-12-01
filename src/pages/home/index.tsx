@@ -1,16 +1,30 @@
+import { zodResolver } from "@hookform/resolvers/zod";
+import { addDays, format, startOfDay } from "date-fns";
+import { endOfDay, nextDay } from "date-fns/esm";
+import { FormProvider, useForm } from "react-hook-form";
 import "twin.macro";
+import * as zod from "zod";
 import { CardYourTodo } from "../../components/cardYourTodo";
 import { FormYourTodo } from "../../components/formYourTodo";
 import { NoYourTodo } from "../../components/noYourTodo";
-import { FormProvider, useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as zod from "zod";
+import { useYourTodoContext } from "../../contexts/yourTodoContext";
+
+interface IYourTodo {
+  projeto: string;
+  descricao: string;
+  status: "Pausado" | "Em andamento" | "Concluído";
+  dataCriacao: string;
+  dataPrevisao: string;
+  dataFinalizacao?: string;
+}
 
 const Home: React.FC = () => {
+  const { addToYourTodoList, yourTodoList } = useYourTodoContext();
+
   const newYourTodoValidationSchema = zod.object({
     projeto: zod.string().min(1, "Escreva um nome de projeto válido"),
     descricaoProjeto: zod.string().min(1, "Escreva uma descrição válida"),
-    dataPrevisão: zod
+    dataPrevisao: zod
       .string()
       .min(10, "Selecione uma data de previsão completa"),
   });
@@ -25,6 +39,28 @@ const Home: React.FC = () => {
     },
   });
 
+  const { handleSubmit } = newYourTodoForm;
+
+  const handleAddNewYourTodo = (data: newYourTodoFormData) => {
+    const newYourTodoToAdd: IYourTodo = {
+      projeto: data.projeto,
+      descricao: data.descricaoProjeto,
+      status: "Em andamento",
+      dataCriacao: format(new Date(), "dd/MM/yyyy"),
+      dataPrevisao: format(
+        startOfDay(addDays(new Date(data.dataPrevisao), 1)),
+        "dd/MM/yyyy"
+      ),
+      dataFinalizacao: "",
+    };
+
+    addToYourTodoList(newYourTodoToAdd);
+  };
+
+  const error = (error: any) => {
+    console.log(error);
+  };
+
   return (
     <div tw="min-h-screen w-full bg-gray-800">
       <div tw="h-full flex flex-col space-y-6 min-h-screen lg:w-[876px] w-[85%] bg-gray-700 mx-auto text-center py-8 px-4 shadow-lg rounded">
@@ -34,43 +70,31 @@ const Home: React.FC = () => {
             Aqui você faz a gestão de suas atividades !
           </span>
         </div>
-        <form tw="lg:w-10/12 w-full mx-auto">
-          <FormYourTodo />
+        <form
+          onSubmit={handleSubmit(handleAddNewYourTodo, error)}
+          tw="lg:w-10/12 w-full mx-auto"
+        >
+          <FormProvider {...newYourTodoForm}>
+            <FormYourTodo />
+          </FormProvider>
         </form>
-        {/* <div tw="space-y-3">
-          <CardYourTodo
-            projeto="Migração do banco de Dados Protheus"
-            descricao="Migração do banco para melhoria de performance"
-            status="Em andamento"
-            dataCriacao="29/11"
-            dataPrevisao="30/11"
-          />
-          <CardYourTodo
-            projeto="Migração do banco de Dados Protheus"
-            descricao="Migração do banco para melhoria de performance"
-            status="Pausado"
-            dataCriacao="29/11"
-            dataPrevisao="30/11"
-            dataFinalizacao="31/11"
-          />
-          <CardYourTodo
-            projeto="Migração do banco de Dados Protheus"
-            descricao="Migração do banco para melhoria de performance"
-            status="Pausado"
-            dataCriacao="29/11"
-            dataPrevisao="30/11"
-            dataFinalizacao="31/11"
-          />
-          <CardYourTodo
-            projeto="Migração do banco de Dados Protheus"
-            descricao="Migração do banco para melhoria de performance"
-            status="Pausado"
-            dataCriacao="29/11"
-            dataPrevisao="30/11"
-            dataFinalizacao="31/11"
-          />
-        </div> */}
-        <NoYourTodo />
+        {yourTodoList.length === 0 ? (
+          <NoYourTodo />
+        ) : (
+          <div tw="space-y-3">
+            {yourTodoList?.map((yourTodo) => {
+              return (
+                <CardYourTodo
+                  projeto={yourTodo.projeto}
+                  descricao={yourTodo.descricao}
+                  status={yourTodo.status}
+                  dataCriacao={yourTodo.dataCriacao}
+                  dataPrevisao={yourTodo.dataPrevisao}
+                />
+              );
+            })}
+          </div>
+        )}
       </div>
     </div>
   );

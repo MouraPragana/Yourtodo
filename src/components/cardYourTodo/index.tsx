@@ -4,6 +4,7 @@ import { AiOutlineCheckCircle } from "react-icons/ai";
 import { VscDebugRestart } from "react-icons/vsc";
 
 interface ICardYourTodo {
+  id: string;
   projeto: string;
   descricao: string;
   status: "Pausado" | "Em andamento" | "Concluído";
