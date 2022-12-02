@@ -40,11 +40,12 @@ export const YourTodoContextProvider = ({
   };
 
   const getYourTodoDone = (id: string) => {
-    const yourNewTodoList = yourTodoList.map((todo) =>
+    const yourNewTodoList: IYourTodo[] = yourTodoList.map((todo) =>
       todo.id === id
         ? {
             ...todo,
             dataFinalizacao: format(new Date(), "dd/MM/yyyy"),
+            status: "Concluído",
           }
         : todo
     );
@@ -52,11 +53,12 @@ export const YourTodoContextProvider = ({
   };
 
   const restartYourTodo = (id: string) => {
-    const yourNewTodoList = yourTodoList.map((todo) =>
+    const yourNewTodoList: IYourTodo[] = yourTodoList.map((todo) =>
       todo.id === id
         ? {
             ...todo,
             dataFinalizacao: "",
+            status: "Em andamento",
           }
         : todo
     );
