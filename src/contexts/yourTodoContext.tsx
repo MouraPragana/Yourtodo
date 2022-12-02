@@ -1,5 +1,11 @@
 import { format } from "date-fns";
-import { createContext, ReactNode, useContext, useState } from "react";
+import {
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 
 interface IYourTodo {
   id: string;
@@ -28,7 +34,18 @@ const YourTodoContext = createContext({} as IYourTodoContext);
 export const YourTodoContextProvider = ({
   children,
 }: YourTodoContextProviderProps) => {
-  const [yourTodoList, setYourTodoList] = useState<IYourTodo[]>([]);
+  const yourTodoLocalStorage = localStorage.getItem("@YourTodo");
+  const yourTodoLocalStorageToArray: IYourTodo[] = yourTodoLocalStorage
+    ? JSON.parse(yourTodoLocalStorage)
+    : [];
+
+  const [yourTodoList, setYourTodoList] = useState<IYourTodo[]>(
+    yourTodoLocalStorageToArray
+  );
+
+  useEffect(() => {
+    localStorage.setItem("@YourTodo", JSON.stringify(yourTodoList));
+  }, [yourTodoList]);
 
   const addToYourTodoList = (data: IYourTodo) => {
     setYourTodoList((state) => [...state, data]);
