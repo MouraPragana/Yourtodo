@@ -1,4 +1,5 @@
 import { format } from "date-fns";
+import { useSnackbar } from "notistack";
 import {
   createContext,
   ReactNode,
@@ -39,6 +40,7 @@ export const YourTodoContextProvider = ({
     "@YourTodo",
     ""
   );
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [yourTodoList, setYourTodoList] =
     useState<IYourTodo[]>(localStorageValue);
 
@@ -47,15 +49,36 @@ export const YourTodoContextProvider = ({
   }, [yourTodoList]);
 
   const addToYourTodoList = (data: IYourTodo) => {
+    enqueueSnackbar("YourTodo cadastrado com sucesso", {
+      variant: "success",
+      anchorOrigin: {
+        horizontal: "center",
+        vertical: "bottom",
+      },
+    });
     setYourTodoList((state) => [...state, data]);
   };
 
   const removeYourTodo = (id: string) => {
+    enqueueSnackbar("YourTodo removido com sucesso.", {
+      variant: "error",
+      anchorOrigin: {
+        horizontal: "center",
+        vertical: "bottom",
+      },
+    });
     const newYourTodoList = yourTodoList.filter((todo) => todo.id !== id);
     setYourTodoList(newYourTodoList);
   };
 
   const getYourTodoDone = (id: string) => {
+    enqueueSnackbar("YourTodo finalizado com sucesso.", {
+      variant: "info",
+      anchorOrigin: {
+        horizontal: "center",
+        vertical: "bottom",
+      },
+    });
     const yourNewTodoList: IYourTodo[] = yourTodoList.map((todo) =>
       todo.id === id
         ? {
@@ -69,6 +92,13 @@ export const YourTodoContextProvider = ({
   };
 
   const restartYourTodo = (id: string) => {
+    enqueueSnackbar("YourTodo reiniciado com sucesso.", {
+      variant: "info",
+      anchorOrigin: {
+        horizontal: "center",
+        vertical: "bottom",
+      },
+    });
     const yourNewTodoList: IYourTodo[] = yourTodoList.map((todo) =>
       todo.id === id
         ? {
