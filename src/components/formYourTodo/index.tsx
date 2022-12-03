@@ -40,7 +40,7 @@ const FormYourTodo: React.FC = () => {
         }}
       />
       <Button sx={{ py: 1.25 }} variant="contained" type="submit">
-        Cadastrar Projeto
+        Cadastrar YourTodo
       </Button>
     </FormContainer>
   );
