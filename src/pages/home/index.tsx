@@ -46,9 +46,10 @@ const Home: React.FC = () => {
     },
   });
 
-  const { handleSubmit } = newYourTodoForm;
+  const { handleSubmit, reset } = newYourTodoForm;
 
   const handleAddNewYourTodo = (data: newYourTodoFormData) => {
+    reset();
     const newYourTodoToAdd: IYourTodo = {
       id: uuidv4(),
       projeto: data.projeto,
