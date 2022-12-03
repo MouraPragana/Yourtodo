@@ -3,6 +3,7 @@ import "twin.macro";
 import { muiConfig } from "./MuiConfig";
 import { FormContainer } from "./styles";
 import { useFormContext } from "react-hook-form";
+import { format } from "date-fns";
 
 const FormYourTodo: React.FC = () => {
   const { register } = useFormContext();
@@ -29,10 +30,14 @@ const FormYourTodo: React.FC = () => {
         label="Data previsão"
         variant="filled"
         type="date"
-        defaultValue={"2022-11-29"}
+        defaultValue={format(new Date(), "yyyy-MM-dd")}
         sx={muiConfig}
         {...register("dataPrevisao")}
+        inputProps={{ min: format(new Date(), "yyyy-MM-dd") }}
         autoComplete="off"
+        onKeyPress={(e) => {
+          e.preventDefault();
+        }}
       />
       <Button sx={{ py: 1.25 }} variant="contained" type="submit">
         Cadastrar Projeto
