@@ -6,6 +6,7 @@ import {
   useEffect,
   useState,
 } from "react";
+import { useLocalStorage } from "../hooks/useLocalStorage";
 
 interface IYourTodo {
   id: string;
@@ -34,17 +35,15 @@ const YourTodoContext = createContext({} as IYourTodoContext);
 export const YourTodoContextProvider = ({
   children,
 }: YourTodoContextProviderProps) => {
-  const yourTodoLocalStorage = localStorage.getItem("@YourTodo");
-  const yourTodoLocalStorageToArray: IYourTodo[] = yourTodoLocalStorage
-    ? JSON.parse(yourTodoLocalStorage)
-    : [];
-
-  const [yourTodoList, setYourTodoList] = useState<IYourTodo[]>(
-    yourTodoLocalStorageToArray
+  const [localStorageValue, setLocalStorageValue] = useLocalStorage(
+    "@YourTodo",
+    ""
   );
+  const [yourTodoList, setYourTodoList] =
+    useState<IYourTodo[]>(localStorageValue);
 
   useEffect(() => {
-    localStorage.setItem("@YourTodo", JSON.stringify(yourTodoList));
+    setLocalStorageValue(JSON.stringify(yourTodoList));
   }, [yourTodoList]);
 
   const addToYourTodoList = (data: IYourTodo) => {
