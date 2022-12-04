@@ -38,7 +38,7 @@ export const YourTodoContextProvider = ({
 }: YourTodoContextProviderProps) => {
   const [localStorageValue, setLocalStorageValue] = useLocalStorage(
     "@YourTodoProduction",
-    ""
+    []
   );
   const { enqueueSnackbar } = useSnackbar();
   const [yourTodoList, setYourTodoList] =
