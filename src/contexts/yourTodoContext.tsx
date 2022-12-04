@@ -96,7 +96,7 @@ export const YourTodoContextProvider = ({
       variant: "info",
       anchorOrigin: {
         horizontal: "center",
-        vertical: "bottom",
+        vertical: "top",
       },
     });
     const yourNewTodoList: IYourTodo[] = yourTodoList.map((todo) =>
