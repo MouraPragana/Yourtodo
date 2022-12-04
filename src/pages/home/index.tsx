@@ -117,7 +117,7 @@ const Home: React.FC = () => {
               onClick={() => handleFilterYourTodoList()}
               tw="text-white px-4 cursor-pointer rounded p-2 hover:scale-105 w-fit mx-auto bg-red-500 transition-all"
             >
-              Mostar as tarefas pendentes
+              Mostar YourTodos pendentes
             </p>
           )}
 
@@ -126,7 +126,7 @@ const Home: React.FC = () => {
             onClick={() => handleFilterYourTodoList()}
             tw="text-white px-4 cursor-pointer rounded p-2 hover:scale-105 w-fit mx-auto bg-blue-500 transition-all"
           >
-            Mostrar todas as tarefas
+            Mostrar todos os YourTodos
           </p>
         )}
 

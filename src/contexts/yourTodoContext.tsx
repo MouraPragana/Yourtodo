@@ -72,7 +72,7 @@ export const YourTodoContextProvider = ({
   };
 
   const getYourTodoDone = (id: string) => {
-    enqueueSnackbar("YourTodo finalizado com sucesso.", {
+    enqueueSnackbar("YourTodo encerrado com sucesso.", {
       variant: "info",
       anchorOrigin: {
         horizontal: "center",
@@ -92,7 +92,7 @@ export const YourTodoContextProvider = ({
   };
 
   const restartYourTodo = (id: string) => {
-    enqueueSnackbar("YourTodo reiniciado com sucesso.", {
+    enqueueSnackbar("YourTodo em andamento com sucesso.", {
       variant: "info",
       anchorOrigin: {
         horizontal: "center",
