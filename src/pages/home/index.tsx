@@ -29,7 +29,7 @@ const Home: React.FC = () => {
   } = useYourTodoContext();
 
   const [filteredValue, setFilteredValue] = useLocalStorage(
-    "@YourTodoFilteredValue",
+    "@YourTodoFilteredProduction",
     ["Em andamento", "Concluído"]
   );
 
