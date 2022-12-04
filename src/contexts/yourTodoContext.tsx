@@ -13,7 +13,7 @@ interface IYourTodo {
   id: string;
   projeto: string;
   descricao: string;
-  status: "Pausado" | "Em andamento" | "Concluído";
+  status: "Em andamento" | "Concluído";
   dataCriacao: string;
   dataPrevisao: string;
   dataFinalizacao?: string;
@@ -53,7 +53,7 @@ export const YourTodoContextProvider = ({
       variant: "success",
       anchorOrigin: {
         horizontal: "center",
-        vertical: "bottom",
+        vertical: "top",
       },
     });
     setYourTodoList((state) => [...state, data]);
@@ -64,7 +64,7 @@ export const YourTodoContextProvider = ({
       variant: "error",
       anchorOrigin: {
         horizontal: "center",
-        vertical: "bottom",
+        vertical: "top",
       },
     });
     const newYourTodoList = yourTodoList.filter((todo) => todo.id !== id);
@@ -76,7 +76,7 @@ export const YourTodoContextProvider = ({
       variant: "info",
       anchorOrigin: {
         horizontal: "center",
-        vertical: "bottom",
+        vertical: "top",
       },
     });
     const yourNewTodoList: IYourTodo[] = yourTodoList.map((todo) =>

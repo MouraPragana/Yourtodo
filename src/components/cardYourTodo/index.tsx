@@ -8,7 +8,7 @@ interface ICardYourTodo {
   id: string;
   projeto: string;
   descricao: string;
-  status: "Pausado" | "Em andamento" | "Concluído";
+  status: "Em andamento" | "Concluído";
   dataCriacao: string;
   dataPrevisao: string;
   dataFinalizacao?: string;

@@ -1,5 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { addDays, format, startOfDay } from "date-fns";
+import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import "twin.macro";
 import { v4 as uuidv4 } from "uuid";
@@ -13,7 +14,7 @@ interface IYourTodo {
   id: string;
   projeto: string;
   descricao: string;
-  status: "Pausado" | "Em andamento" | "Concluído";
+  status: "Em andamento" | "Concluído";
   dataCriacao: string;
   dataPrevisao: string;
   dataFinalizacao?: string;
@@ -27,6 +28,23 @@ const Home: React.FC = () => {
     getYourTodoDone,
     restartYourTodo,
   } = useYourTodoContext();
+
+  const [filteredYourTodoList, setFilteredYourTodoList] = useState<string[]>([
+    "Em andamento",
+    "Concluído",
+  ]);
+
+  const handleFilterYourTodoList = () => {
+    if (filteredYourTodoList.length === 1) {
+      setFilteredYourTodoList(["Em andamento", "Concluído"]);
+    } else {
+      setFilteredYourTodoList(["Em andamento"]);
+    }
+  };
+
+  const howManyYourTodoListFiltered = yourTodoList?.filter((yourTodo) =>
+    filteredYourTodoList.includes(yourTodo.status)
+  ).length;
 
   const newYourTodoValidationSchema = zod.object({
     projeto: zod.string().min(1, "Escreva um nome de projeto válido"),
@@ -90,27 +108,60 @@ const Home: React.FC = () => {
             <FormYourTodo />
           </FormProvider>
         </form>
+
+        {filteredYourTodoList.length === 2 &&
+          yourTodoList.length > 0 &&
+          yourTodoList.filter((todo) => todo.status === "Concluído").length >
+            0 && (
+            <p
+              onClick={() => handleFilterYourTodoList()}
+              tw="text-white px-4 cursor-pointer rounded p-2 hover:scale-105 w-fit mx-auto bg-red-500 transition-all"
+            >
+              Mostar as tarefas pendentes
+            </p>
+          )}
+
+        {filteredYourTodoList.length === 1 && yourTodoList.length > 0 && (
+          <p
+            onClick={() => handleFilterYourTodoList()}
+            tw="text-white px-4 cursor-pointer rounded p-2 hover:scale-105 w-fit mx-auto bg-blue-500 transition-all"
+          >
+            Mostrar todas as tarefas
+          </p>
+        )}
+
         {yourTodoList.length === 0 ? (
           <NoYourTodo />
         ) : (
           <div tw="space-y-3">
-            {yourTodoList?.map((yourTodo) => {
-              return (
-                <CardYourTodo
-                  id={yourTodo.id}
-                  key={yourTodo.id}
-                  projeto={yourTodo.projeto}
-                  descricao={yourTodo.descricao}
-                  status={yourTodo.status}
-                  dataCriacao={yourTodo.dataCriacao}
-                  dataPrevisao={yourTodo.dataPrevisao}
-                  dataFinalizacao={yourTodo.dataFinalizacao}
-                  onClickToAdd={handleRemoveYourTodo}
-                  onClickToGetDone={getYourTodoDone}
-                  onClickToRestart={restartYourTodo}
-                />
-              );
-            })}
+            {filteredYourTodoList.length === 1 &&
+              howManyYourTodoListFiltered === 0 && (
+                <span tw="text-gray-200 font-bold lg:text-3xl text-lg lg:m-0 lg:p-0 p-2 h-full">
+                  Parabéns, você não possui atividades pendentes !
+                </span>
+              )}
+
+            {yourTodoList
+              ?.filter((yourTodo) =>
+                filteredYourTodoList.includes(yourTodo.status)
+              )
+              .map((yourTodo) => {
+                return (
+                  <CardYourTodo
+                    id={yourTodo.id}
+                    key={yourTodo.id}
+                    projeto={yourTodo.projeto}
+                    descricao={yourTodo.descricao}
+                    status={yourTodo.status}
+                    dataCriacao={yourTodo.dataCriacao}
+                    dataPrevisao={yourTodo.dataPrevisao}
+                    dataFinalizacao={yourTodo.dataFinalizacao}
+                    onClickToAdd={handleRemoveYourTodo}
+                    onClickToGetDone={getYourTodoDone}
+                    onClickToRestart={restartYourTodo}
+                  />
+                );
+              })}
           </div>
         )}
       </div>
