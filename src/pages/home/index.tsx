@@ -8,7 +8,6 @@ import { CardYourTodo } from "../../components/cardYourTodo";
 import { FormYourTodo } from "../../components/formYourTodo";
 import { NoYourTodo } from "../../components/noYourTodo";
 import { useYourTodoContext } from "../../contexts/yourTodoContext";
-import { useLocalStorage } from "../../hooks/useLocalStorage";
 interface IYourTodo {
   id: string;
   projeto: string;
@@ -23,28 +22,17 @@ const Home: React.FC = () => {
   const {
     addToYourTodoList,
     localStorageYourTodoList,
+    filteredLocalStorageValue,
     removeYourTodo,
     getYourTodoDone,
     restartYourTodo,
+    handleFilterYourTodoList,
   } = useYourTodoContext();
-
-  const [filteredValue, setFilteredValue] = useLocalStorage(
-    "@YourTodoFilteredProduction",
-    ["Em andamento", "Concluído"]
-  );
-
-  const handleFilterYourTodoList = () => {
-    if (filteredValue.length === 1) {
-      setFilteredValue(["Em andamento", "Concluído"]);
-    } else {
-      setFilteredValue(["Em andamento"]);
-    }
-  };
 
   const howManyYourTodoListFiltered =
     localStorageYourTodoList &&
     localStorageYourTodoList?.filter((yourTodo) =>
-      filteredValue.includes(yourTodo.status)
+      filteredLocalStorageValue.includes(yourTodo.status)
     ).length;
 
   const newYourTodoValidationSchema = zod.object({
@@ -113,7 +101,7 @@ const Home: React.FC = () => {
         {/* Se estiver filtrado para mostrar os dois tipos - Em Andamento e conclúido */}
         {/* Se eu tiver algum yourtodo concluído */}
         {/* Se eu tiver algum yourtodo em andamento */}
-        {filteredValue.length === 2 &&
+        {filteredLocalStorageValue.length === 2 &&
           localStorageYourTodoList &&
           localStorageYourTodoList.filter((todo) => todo.status === "Concluído")
             .length > 0 &&
@@ -130,14 +118,15 @@ const Home: React.FC = () => {
 
         {/* Se estiver filtrado para mostrar só yourtodo em andamento */}
         {/* Se tiver algum yourtodo cadastrado */}
-        {filteredValue.length === 1 && localStorageYourTodoList.length > 0 && (
-          <p
-            onClick={() => handleFilterYourTodoList()}
-            tw="text-white px-4 cursor-pointer rounded p-2 hover:scale-105 w-fit mx-auto bg-blue-500 transition-all"
-          >
-            Mostrar todos os YourTodos
-          </p>
-        )}
+        {filteredLocalStorageValue.length === 1 &&
+          localStorageYourTodoList.length > 0 && (
+            <p
+              onClick={() => handleFilterYourTodoList()}
+              tw="text-white px-4 cursor-pointer rounded p-2 hover:scale-105 w-fit mx-auto bg-blue-500 transition-all"
+            >
+              Mostrar todos os YourTodos
+            </p>
+          )}
 
         {localStorageYourTodoList.length === 0 ? (
           <NoYourTodo />
@@ -145,7 +134,7 @@ const Home: React.FC = () => {
           <div tw="space-y-3">
             {/* Se estiver filtrado para mostrar só yourtodo em andamento */}
             {/* se eu não tiver nenhum yourtodo em andamento */}
-            {filteredValue.length === 1 &&
+            {filteredLocalStorageValue.length === 1 &&
               howManyYourTodoListFiltered === 0 && (
                 <span tw="text-gray-200 font-bold lg:text-3xl text-lg lg:m-0 lg:p-0 p-2 h-full">
                   Parabéns, você não possui atividades pendentes !
@@ -153,7 +142,9 @@ const Home: React.FC = () => {
               )}
 
             {localStorageYourTodoList
-              ?.filter((yourTodo) => filteredValue.includes(yourTodo.status))
+              ?.filter((yourTodo) =>
+                filteredLocalStorageValue.includes(yourTodo.status)
+              )
               .map((yourTodo) => {
                 return (
                   <CardYourTodo

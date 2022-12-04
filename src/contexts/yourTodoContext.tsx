@@ -15,10 +15,12 @@ interface IYourTodo {
 
 interface IYourTodoContext {
   localStorageYourTodoList: IYourTodo[];
+  filteredLocalStorageValue: string[];
   addToYourTodoList: (data: IYourTodo) => void;
   removeYourTodo: (id: string) => void;
   getYourTodoDone: (id: string) => void;
   restartYourTodo: (id: string) => void;
+  handleFilterYourTodoList: () => void;
 }
 
 interface YourTodoContextProviderProps {
@@ -32,6 +34,21 @@ export const YourTodoContextProvider = ({
 }: YourTodoContextProviderProps) => {
   const [localStorageYourTodoList, setLocalStorageYourTodoList] =
     useLocalStorage("@YourTodoListProduction", []);
+
+  const [filteredLocalStorageValue, setFilteredLocalStorageValue] =
+    useLocalStorage("@YourTodoFilteredProduction", [
+      "Em andamento",
+      "Concluído",
+    ]);
+
+  const handleFilterYourTodoList = () => {
+    if (filteredLocalStorageValue.length === 1) {
+      setFilteredLocalStorageValue(["Em andamento", "Concluído"]);
+    } else {
+      setFilteredLocalStorageValue(["Em andamento"]);
+    }
+  };
+
   const { enqueueSnackbar } = useSnackbar();
 
   const addToYourTodoList = (data: IYourTodo) => {
@@ -105,6 +122,8 @@ export const YourTodoContextProvider = ({
     <YourTodoContext.Provider
       value={{
         localStorageYourTodoList,
+        filteredLocalStorageValue,
+        handleFilterYourTodoList,
         addToYourTodoList,
         removeYourTodo,
         getYourTodoDone,
