@@ -42,9 +42,11 @@ const Home: React.FC = () => {
     }
   };
 
-  const howManyYourTodoListFiltered = yourTodoList?.filter((yourTodo) =>
-    filteredYourTodoList.includes(yourTodo.status)
-  ).length;
+  const howManyYourTodoListFiltered =
+    yourTodoList &&
+    yourTodoList?.filter((yourTodo) =>
+      filteredYourTodoList.includes(yourTodo.status)
+    ).length;
 
   const newYourTodoValidationSchema = zod.object({
     projeto: zod.string().min(1, "Escreva um nome de projeto válido"),
