@@ -111,8 +111,9 @@ const Home: React.FC = () => {
           </FormProvider>
         </form>
 
+        {/* Se estiver filtrado para mostrar os dois tipos - Em Andamento e conclúido */}
+        {/* Se eu tiver algum yourtodo concluído */}
         {filteredYourTodoList.length === 2 &&
-          yourTodoList.length > 0 &&
           yourTodoList.filter((todo) => todo.status === "Concluído").length >
             0 && (
             <p
@@ -123,6 +124,8 @@ const Home: React.FC = () => {
             </p>
           )}
 
+        {/* Se estiver filtrado para mostrar só yourtodo em andamento */}
+        {/* Se tiver algum yourtodo cadastrado */}
         {filteredYourTodoList.length === 1 && yourTodoList.length > 0 && (
           <p
             onClick={() => handleFilterYourTodoList()}
@@ -136,6 +139,8 @@ const Home: React.FC = () => {
           <NoYourTodo />
         ) : (
           <div tw="space-y-3">
+            {/* Se estiver filtrado para mostrar só yourtodo em andamento */}
+            {/* se eu não tiver nenhum yourtodo em andamento */}
             {filteredYourTodoList.length === 1 &&
               howManyYourTodoListFiltered === 0 && (
                 <span tw="text-gray-200 font-bold lg:text-3xl text-lg lg:m-0 lg:p-0 p-2 h-full">
