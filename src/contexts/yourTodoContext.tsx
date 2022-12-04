@@ -37,15 +37,15 @@ export const YourTodoContextProvider = ({
   children,
 }: YourTodoContextProviderProps) => {
   const [localStorageValue, setLocalStorageValue] = useLocalStorage(
-    "@YourTodo",
+    "@YourTodoProduction",
     ""
   );
-  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const { enqueueSnackbar } = useSnackbar();
   const [yourTodoList, setYourTodoList] =
     useState<IYourTodo[]>(localStorageValue);
 
   useEffect(() => {
-    setLocalStorageValue(JSON.stringify(yourTodoList));
+    setLocalStorageValue(yourTodoList);
   }, [yourTodoList]);
 
   const addToYourTodoList = (data: IYourTodo) => {

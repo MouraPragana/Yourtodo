@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { addDays, format, startOfDay } from "date-fns";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import "twin.macro";
 import { v4 as uuidv4 } from "uuid";
@@ -9,7 +9,7 @@ import { CardYourTodo } from "../../components/cardYourTodo";
 import { FormYourTodo } from "../../components/formYourTodo";
 import { NoYourTodo } from "../../components/noYourTodo";
 import { useYourTodoContext } from "../../contexts/yourTodoContext";
-
+import { useLocalStorage } from "../../hooks/useLocalStorage";
 interface IYourTodo {
   id: string;
   projeto: string;
@@ -29,10 +29,13 @@ const Home: React.FC = () => {
     restartYourTodo,
   } = useYourTodoContext();
 
-  const [filteredYourTodoList, setFilteredYourTodoList] = useState<string[]>([
-    "Em andamento",
-    "Concluído",
-  ]);
+  const [filteredValue, setFilteredValue] = useLocalStorage(
+    "@YourTodoFilteredValue",
+    ["Em andamento", "Concluído"]
+  );
+
+  const [filteredYourTodoList, setFilteredYourTodoList] =
+    useState<string[]>(filteredValue);
 
   const handleFilterYourTodoList = () => {
     if (filteredYourTodoList.length === 1) {
@@ -41,6 +44,10 @@ const Home: React.FC = () => {
       setFilteredYourTodoList(["Em andamento"]);
     }
   };
+
+  useEffect(() => {
+    setFilteredValue(filteredYourTodoList);
+  }, [filteredYourTodoList]);
 
   const howManyYourTodoListFiltered =
     yourTodoList &&
@@ -113,8 +120,12 @@ const Home: React.FC = () => {
 
         {/* Se estiver filtrado para mostrar os dois tipos - Em Andamento e conclúido */}
         {/* Se eu tiver algum yourtodo concluído */}
+        {/* Se eu tiver algum yourtodo em andamento */}
         {filteredYourTodoList.length === 2 &&
+          yourTodoList &&
           yourTodoList.filter((todo) => todo.status === "Concluído").length >
+            0 &&
+          yourTodoList.filter((todo) => todo.status === "Em andamento").length >
             0 && (
             <p
               onClick={() => handleFilterYourTodoList()}
