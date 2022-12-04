@@ -1,12 +1,6 @@
 import { format } from "date-fns";
 import { useSnackbar } from "notistack";
-import {
-  createContext,
-  ReactNode,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
+import { createContext, ReactNode, useContext } from "react";
 import { useLocalStorage } from "../hooks/useLocalStorage";
 
 interface IYourTodo {
@@ -20,7 +14,7 @@ interface IYourTodo {
 }
 
 interface IYourTodoContext {
-  yourTodoList: IYourTodo[];
+  localStorageYourTodoList: IYourTodo[];
   addToYourTodoList: (data: IYourTodo) => void;
   removeYourTodo: (id: string) => void;
   getYourTodoDone: (id: string) => void;
@@ -36,17 +30,9 @@ const YourTodoContext = createContext({} as IYourTodoContext);
 export const YourTodoContextProvider = ({
   children,
 }: YourTodoContextProviderProps) => {
-  const [localStorageValue, setLocalStorageValue] = useLocalStorage(
-    "@YourTodoProduction",
-    []
-  );
+  const [localStorageYourTodoList, setLocalStorageYourTodoList] =
+    useLocalStorage("@YourTodoProduction", []);
   const { enqueueSnackbar } = useSnackbar();
-  const [yourTodoList, setYourTodoList] =
-    useState<IYourTodo[]>(localStorageValue);
-
-  useEffect(() => {
-    setLocalStorageValue(yourTodoList);
-  }, [yourTodoList]);
 
   const addToYourTodoList = (data: IYourTodo) => {
     enqueueSnackbar("YourTodo cadastrado com sucesso", {
@@ -56,7 +42,7 @@ export const YourTodoContextProvider = ({
         vertical: "bottom",
       },
     });
-    setYourTodoList((state) => [...state, data]);
+    setLocalStorageYourTodoList((state: IYourTodo[]) => [...state, data]);
   };
 
   const removeYourTodo = (id: string) => {
@@ -67,8 +53,10 @@ export const YourTodoContextProvider = ({
         vertical: "bottom",
       },
     });
-    const newYourTodoList = yourTodoList.filter((todo) => todo.id !== id);
-    setYourTodoList(newYourTodoList);
+    const newYourTodoList = localStorageYourTodoList.filter(
+      (todo: IYourTodo) => todo.id !== id
+    );
+    setLocalStorageYourTodoList(newYourTodoList);
   };
 
   const getYourTodoDone = (id: string) => {
@@ -79,16 +67,17 @@ export const YourTodoContextProvider = ({
         vertical: "bottom",
       },
     });
-    const yourNewTodoList: IYourTodo[] = yourTodoList.map((todo) =>
-      todo.id === id
-        ? {
-            ...todo,
-            dataFinalizacao: format(new Date(), "dd/MM/yyyy"),
-            status: "Concluído",
-          }
-        : todo
+    const yourNewTodoList: IYourTodo[] = localStorageYourTodoList.map(
+      (todo: IYourTodo) =>
+        todo.id === id
+          ? {
+              ...todo,
+              dataFinalizacao: format(new Date(), "dd/MM/yyyy"),
+              status: "Concluído",
+            }
+          : todo
     );
-    setYourTodoList(yourNewTodoList);
+    setLocalStorageYourTodoList(yourNewTodoList);
   };
 
   const restartYourTodo = (id: string) => {
@@ -99,22 +88,23 @@ export const YourTodoContextProvider = ({
         vertical: "bottom",
       },
     });
-    const yourNewTodoList: IYourTodo[] = yourTodoList.map((todo) =>
-      todo.id === id
-        ? {
-            ...todo,
-            dataFinalizacao: "",
-            status: "Em andamento",
-          }
-        : todo
+    const yourNewTodoList: IYourTodo[] = localStorageYourTodoList.map(
+      (todo: IYourTodo) =>
+        todo.id === id
+          ? {
+              ...todo,
+              dataFinalizacao: "",
+              status: "Em andamento",
+            }
+          : todo
     );
-    setYourTodoList(yourNewTodoList);
+    setLocalStorageYourTodoList(yourNewTodoList);
   };
 
   return (
     <YourTodoContext.Provider
       value={{
-        yourTodoList,
+        localStorageYourTodoList,
         addToYourTodoList,
         removeYourTodo,
         getYourTodoDone,

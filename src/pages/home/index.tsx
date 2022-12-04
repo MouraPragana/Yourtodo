@@ -1,6 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { addDays, format, startOfDay } from "date-fns";
-import { useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import "twin.macro";
 import { v4 as uuidv4 } from "uuid";
@@ -23,7 +22,7 @@ interface IYourTodo {
 const Home: React.FC = () => {
   const {
     addToYourTodoList,
-    yourTodoList,
+    localStorageYourTodoList,
     removeYourTodo,
     getYourTodoDone,
     restartYourTodo,
@@ -34,25 +33,18 @@ const Home: React.FC = () => {
     ["Em andamento", "Concluído"]
   );
 
-  const [filteredYourTodoList, setFilteredYourTodoList] =
-    useState<string[]>(filteredValue);
-
   const handleFilterYourTodoList = () => {
-    if (filteredYourTodoList.length === 1) {
-      setFilteredYourTodoList(["Em andamento", "Concluído"]);
+    if (filteredValue.length === 1) {
+      setFilteredValue(["Em andamento", "Concluído"]);
     } else {
-      setFilteredYourTodoList(["Em andamento"]);
+      setFilteredValue(["Em andamento"]);
     }
   };
 
-  useEffect(() => {
-    setFilteredValue(filteredYourTodoList);
-  }, [filteredYourTodoList]);
-
   const howManyYourTodoListFiltered =
-    yourTodoList &&
-    yourTodoList?.filter((yourTodo) =>
-      filteredYourTodoList.includes(yourTodo.status)
+    localStorageYourTodoList &&
+    localStorageYourTodoList?.filter((yourTodo) =>
+      filteredValue.includes(yourTodo.status)
     ).length;
 
   const newYourTodoValidationSchema = zod.object({
@@ -121,12 +113,13 @@ const Home: React.FC = () => {
         {/* Se estiver filtrado para mostrar os dois tipos - Em Andamento e conclúido */}
         {/* Se eu tiver algum yourtodo concluído */}
         {/* Se eu tiver algum yourtodo em andamento */}
-        {filteredYourTodoList.length === 2 &&
-          yourTodoList &&
-          yourTodoList.filter((todo) => todo.status === "Concluído").length >
-            0 &&
-          yourTodoList.filter((todo) => todo.status === "Em andamento").length >
-            0 && (
+        {filteredValue.length === 2 &&
+          localStorageYourTodoList &&
+          localStorageYourTodoList.filter((todo) => todo.status === "Concluído")
+            .length > 0 &&
+          localStorageYourTodoList.filter(
+            (todo) => todo.status === "Em andamento"
+          ).length > 0 && (
             <p
               onClick={() => handleFilterYourTodoList()}
               tw="text-white px-4 cursor-pointer rounded p-2 hover:scale-105 w-fit mx-auto bg-red-500 transition-all"
@@ -137,7 +130,7 @@ const Home: React.FC = () => {
 
         {/* Se estiver filtrado para mostrar só yourtodo em andamento */}
         {/* Se tiver algum yourtodo cadastrado */}
-        {filteredYourTodoList.length === 1 && yourTodoList.length > 0 && (
+        {filteredValue.length === 1 && localStorageYourTodoList.length > 0 && (
           <p
             onClick={() => handleFilterYourTodoList()}
             tw="text-white px-4 cursor-pointer rounded p-2 hover:scale-105 w-fit mx-auto bg-blue-500 transition-all"
@@ -146,23 +139,21 @@ const Home: React.FC = () => {
           </p>
         )}
 
-        {yourTodoList.length === 0 ? (
+        {localStorageYourTodoList.length === 0 ? (
           <NoYourTodo />
         ) : (
           <div tw="space-y-3">
             {/* Se estiver filtrado para mostrar só yourtodo em andamento */}
             {/* se eu não tiver nenhum yourtodo em andamento */}
-            {filteredYourTodoList.length === 1 &&
+            {filteredValue.length === 1 &&
               howManyYourTodoListFiltered === 0 && (
                 <span tw="text-gray-200 font-bold lg:text-3xl text-lg lg:m-0 lg:p-0 p-2 h-full">
                   Parabéns, você não possui atividades pendentes !
                 </span>
               )}
 
-            {yourTodoList
-              ?.filter((yourTodo) =>
-                filteredYourTodoList.includes(yourTodo.status)
-              )
+            {localStorageYourTodoList
+              ?.filter((yourTodo) => filteredValue.includes(yourTodo.status))
               .map((yourTodo) => {
                 return (
                   <CardYourTodo
