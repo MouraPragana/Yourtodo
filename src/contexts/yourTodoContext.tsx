@@ -53,7 +53,7 @@ export const YourTodoContextProvider = ({
       variant: "success",
       anchorOrigin: {
         horizontal: "center",
-        vertical: "top",
+        vertical: "bottom",
       },
     });
     setYourTodoList((state) => [...state, data]);
@@ -64,7 +64,7 @@ export const YourTodoContextProvider = ({
       variant: "error",
       anchorOrigin: {
         horizontal: "center",
-        vertical: "top",
+        vertical: "bottom",
       },
     });
     const newYourTodoList = yourTodoList.filter((todo) => todo.id !== id);
@@ -76,7 +76,7 @@ export const YourTodoContextProvider = ({
       variant: "info",
       anchorOrigin: {
         horizontal: "center",
-        vertical: "top",
+        vertical: "bottom",
       },
     });
     const yourNewTodoList: IYourTodo[] = yourTodoList.map((todo) =>
@@ -96,7 +96,7 @@ export const YourTodoContextProvider = ({
       variant: "info",
       anchorOrigin: {
         horizontal: "center",
-        vertical: "top",
+        vertical: "bottom",
       },
     });
     const yourNewTodoList: IYourTodo[] = yourTodoList.map((todo) =>
