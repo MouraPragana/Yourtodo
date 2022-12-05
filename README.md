@@ -2,7 +2,7 @@
 
 <img src="https://user-images.githubusercontent.com/78274293/205454963-a22fdd96-65f5-46d5-bca6-a4b9e6903ab4.png" alt="exemplo imagem">
 
-> Projeto-estudo que consiste no gerenciamento das suas atividades a serem realizadas. Nele vocÊ consegue alimentar o seu "YourTodo list".
+> Projeto-estudo que consiste no gerenciamento das suas atividades a serem realizadas. Nele você consegue alimentar o seu "YourTodo list".
 
 ## 🚀 Instalando YourTodo
 
